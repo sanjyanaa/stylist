@@ -285,16 +285,15 @@
       border-radius: 6px;
       overflow: hidden;
       margin-bottom: 14px;
+      align-items: stretch;
     }
 
     .product-img {
       width: 110px;
       min-width: 110px;
-      height: 110px;
-      background-size: cover;
-      background-position: center;
       background-color: #ece4d8;
       flex-shrink: 0;
+      position: relative;
     }
 
     .product-img img {
@@ -302,6 +301,9 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
     .product-info {
@@ -625,7 +627,7 @@ Recommend exactly 3 pieces. Use this exact format:
 
 PIECE 1
 Name: [exact name from list]
-Why: [2 warm specific sentences on why this suits them]
+Why: [1 warm specific sentences on why this suits them]
 
 PIECE 2
 Name: [exact name]
