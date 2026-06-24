@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sri Ganesh Jewellery & Gem Corner — Your Stylist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --crimson: #5C0F0F;
+      --crimson-dark: #430b0b;
+      --gold: #C9973A;
+      --cream: #FBF7F0;
+      --white: #ffffff;
+      --muted: #8a7d72;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #f2efe9;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px 0;
+    }
+
+    /* Desktop: wider card */
+    .phone {
+      width: 100%;
+      max-width: 480px;
+      background: var(--white);
+      min-height: 780px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @media(max-width:520px) {
+      body {
+        padding: 0;
+      }
+
+      .phone {
+        border-radius: 0;
+        box-shadow: none;
+        min-height: 100vh;
+      }
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      padding: 32px 24px;
+      min-height: 780px;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* progress dots */
+    .progress {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+
+    .dot {
+      height: 8px;
+      width: 8px;
+      border-radius: 999px;
+      background: #d9d3c8;
+      transition: all .25s ease;
+    }
+
+    .dot.active {
+      width: 28px;
+      background: var(--crimson);
+    }
+
+    h1.title {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--crimson);
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    p.subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+      margin-bottom: 24px;
+    }
+
+    h2.section-label {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--crimson);
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .option-btn {
+      background: var(--crimson);
+      color: var(--white);
+      border: 2px solid var(--crimson);
+      border-radius: 6px;
+      padding: 14px 16px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all .15s ease;
+    }
+
+    .option-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .option-btn.selected {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 1px var(--gold);
+    }
+
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .nav-row.center-only {
+      justify-content: center;
+    }
+
+    .back-link {
+      color: var(--crimson);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .continue-btn {
+      background: var(--white);
+      color: var(--crimson);
+      border: 1.5px solid var(--crimson);
+      border-radius: 999px;
+      padding: 10px 28px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      opacity: 0.4;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+
+    .continue-btn.enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .continue-btn.enabled:hover {
+      background: var(--crimson);
+      color: var(--white);
+    }
+
+    textarea.detail-box {
+      background: var(--crimson);
+      color: #f1d9d9;
+      border: none;
+      border-radius: 6px;
+      padding: 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      min-height: 130px;
+      resize: none;
+      margin-bottom: 24px;
+    }
+
+    textarea.detail-box::placeholder {
+      color: #e3bdbd;
+    }
+
+    textarea.detail-box:focus {
+      outline: 1px solid var(--gold);
+    }
+
+    /* LOADING SCREEN */
+    #screen-loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 780px;
+      padding: 32px 24px;
+    }
+
+    #screen-loading.active {
+      display: flex;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid #e8d9c8;
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin .9s linear infinite;
+      margin-bottom: 24px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-title {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--crimson);
+      font-size: 22px;
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+
+    .loading-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* RESULTS SCREEN */
+    #screen4 {
+      min-height: auto;
+      padding-bottom: 40px;
+    }
+
+    .results-title {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--crimson);
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .results-sub {
+      text-align: center;
+      color: var(--crimson);
+      font-size: 12px;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .product-card {
+      display: flex;
+      border: 1px solid #eee0d6;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .product-img {
+      width: 110px;
+      min-width: 110px;
+      height: 110px;
+      background-size: cover;
+      background-position: center;
+      background-color: #ece4d8;
+      flex-shrink: 0;
+    }
+
+    .product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-info {
+      padding: 10px 14px;
+      border-left: 3px solid var(--gold);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .product-cat {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--crimson);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .product-name {
+      font-family: 'Cormorant Garamond', serif;
+      color: #2a2a2a;
+      font-size: 17px;
+      font-weight: 700;
+      margin: 2px 0 4px;
+    }
+
+    .product-desc {
+      font-size: 11.5px;
+      color: #666;
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+
+    .view-link {
+      font-size: 12px;
+      color: var(--crimson);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .view-link:hover {
+      text-decoration: underline;
+    }
+
+    .quote {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: #9a8c7d;
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 18px 0;
+      padding: 0 6px;
+    }
+
+    .cta-box {
+      background: var(--crimson-dark);
+      border-radius: 8px;
+      padding: 22px 18px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .cta-heading {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--gold);
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .cta-sub {
+      color: #f0e3e3;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .whatsapp-btn {
+      background: #25D366;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .start-over {
+      display: block;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      margin: 0 auto;
+    }
+
+    .start-over:hover {
+      color: var(--crimson);
+    }
+
+    .error-box {
+      background: #fff0f0;
+      border: 1px solid #ffcdd2;
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #c62828;
+      margin-bottom: 14px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="phone">
+
+    <!-- SCREEN 1: Occasion -->
+    <div class="screen active" id="screen1">
+      <div class="progress">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <h1 class="title">Your Stylist</h1>
+      <p class="subtitle">Discover your perfect piece</p>
+      <h2 class="section-label">Pick the occasion</h2>
+      <div class="options" id="occasionOptions">
+        <button class="option-btn" data-group="occasion" data-value="Indian wedding or reception">Indian
+          Wedding</button>
+        <button class="option-btn" data-group="occasion"
+          data-value="Engagement or anniversary">Engagement/Anniversary</button>
+        <button class="option-btn" data-group="occasion"
+          data-value="Festive celebration (Deepavali, Thaipusam, Pongal)">Festive Celebration</button>
+        <button class="option-btn" data-group="occasion" data-value="Everyday or office wear">Everyday Wear</button>
+        <button class="option-btn" data-group="occasion" data-value="Date night or dinner">Date Night</button>
+        <button class="option-btn" data-group="occasion" data-value="Temple visit or religious ceremony">Ceremony or
+          Temple</button>
+      </div>
+      <div class="nav-row center-only">
+        <button class="continue-btn" id="continue1" onclick="goTo('screen2')">Continue</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: Style -->
+    <div class="screen" id="screen2">
+      <div class="progress">
+        <div class="dot"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+      </div>
+      <h1 class="title">Describe your style</h1>
+      <p class="subtitle">&nbsp;</p>
+      <div class="options" id="styleOptions">
+        <button class="option-btn" data-group="style" data-value="Bold and statement-making — I want to be noticed">Bold
+          Statement</button>
+        <button class="option-btn" data-group="style" data-value="Delicate and minimal — less is more">Delicate &amp;
+          Minimal</button>
+        <button class="option-btn" data-group="style"
+          data-value="Traditional South Indian — classic temple jewellery">Traditional</button>
+        <button class="option-btn" data-group="style"
+          data-value="Modern and contemporary — clean lines, fresh takes">Modern &amp; Contemporary</button>
+      </div>
+      <div class="nav-row">
+        <button class="back-link" onclick="goTo('screen1')">← Back</button>
+        <button class="continue-btn" id="continue2" onclick="goTo('screen3')">Continue</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Extra details -->
+    <div class="screen" id="screen3">
+      <div class="progress">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot active"></div>
+      </div>
+      <h1 class="title" style="text-align:left;">Additional details — optional</h1>
+      <p class="subtitle" style="text-align:left;margin-bottom:16px;">Tell us about your colour preferences, budget,
+        outfit colour…</p>
+      <div class="error-box" id="errorBox"></div>
+      <textarea class="detail-box" id="extraDetails"
+        placeholder="e.g. My saree is red, I prefer rose gold, looking for something under RM 3000..."></textarea>
+      <div class="nav-row">
+        <button class="back-link" onclick="goTo('screen2')">← Back</button>
+        <button class="continue-btn enabled" onclick="getRecommendation()">Get my picks</button>
+      </div>
+    </div>
+
+    <!-- LOADING -->
+    <div id="screen-loading">
+      <div class="spinner"></div>
+      <div class="loading-title">Styling your look...</div>
+      <div class="loading-sub">Browsing the Sri Ganesh collection for you</div>
+    </div>
+
+    <!-- SCREEN 4: Results -->
+    <div class="screen" id="screen4">
+      <div class="results-title">Styled for you</div>
+      <div class="results-sub">Three pieces hand picked for you by our stylist</div>
+      <div id="recOutput"></div>
+      <div class="quote">"Every piece in our collection is crafted in 916 hallmark gold — visit us in store to feel the
+        weight of these stories."</div>
+      <div class="cta-box">
+        <div class="cta-heading">Love what you see?</div>
+        <div class="cta-sub">Message us on WhatsApp to check availability, book a viewing, or customise these pieces.
+        </div>
+        <a class="whatsapp-btn" id="waBtn" href="#" target="_blank">💬 Chat on WhatsApp</a>
+      </div>
+      <br>
+      <button class="start-over" onclick="restart()">↺ Start over</button>
+    </div>
+
+  </div>
+
+  <script>
+    // ─── CONFIG ───────────────────────────────────────────────
+    // API key removed — handled server-side
+    const WHATSAPP_NUMBER = "601XXXXXXXX"; // e.g. 60123456789
+
+    // ─── CATALOGUE: piece name → image URL, category, collection link ───
+    const CATALOGUE = {
+      "Maharaja Lion head bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/6-5.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
+      "Bangle with multi-shape garnet": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/2-4.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
+      "Multi-charm bracelet": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/3-4.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
+      "Window Bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/4-4.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
+      "Square-section ruby and garnet bracelet": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/5-2.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
+      "Pearl and emerald Bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/2-3.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
+      "Traditional broad bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/3-5.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
+      "Antique diamond and pink sapphire bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/5-5.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
+      "Lakshmi Bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/1-2.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
+      "Rose-cut diamond bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/10-2.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
+      "Aquamarine earrings": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/5-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Peacock pear shape design": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/3-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Yellow Diamond Flower studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/1-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Leaf-design ear stud": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/4-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Peacock feather ear dangles": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/07/2.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Blue flower ear studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/07/Earring-2-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Green Dangle ear studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/7-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Shimmering Opal ear studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/6-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Glamorous Sunflower ear studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/9-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Exquisite Pink Chandelier studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/12.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Regal Radiant Rose Earrings": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/13.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
+      "Rhodolite Garnet Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/2-7.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "Red Grapes Creeper Design necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/3-5.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "Fancy Colour Rough Diamond Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/4-5.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "Choker Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/5-6.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "Red and White Zirconia Choker": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/7-2.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "Chandelier Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/8-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "Traditional Emerald Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/9-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "All Gold Choker Antique Design": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/10-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "Fancy Multicolour Tourmaline Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/11-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "Jhumka Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/18-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "Lakshmi Coin Short Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/19-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
+      "Stunning Seashell Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/1-6.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
+      "Green Garnet Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/2-7.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
+      "Blue sapphire and diamond ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/1-8.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
+      "Emerald Maharani Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/7-5.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
+      "Ilanthirayan Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/9-5.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
+      "Majestic Blossom Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/20-4.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
+      "Trinity Gem Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/17-4.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
+      "Navarata Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/6-7.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
+      "Ganesha Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/5-7.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
+    };
+
+    const CATALOGUE_LIST = Object.entries(CATALOGUE)
+      .map(([name, info]) => `- ${name} (${info.cat})`)
+      .join('\n');
+
+    const answers = { occasion: '', style: '', extra: '' };
+
+    // ─── NAVIGATION ───────────────────────────────────────────
+    function goTo(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-loading').classList.remove('active');
+      const target = document.getElementById(screenId);
+      if (target) target.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // ─── OPTION SELECTION ─────────────────────────────────────
+    function setupGroup(groupName, continueBtnId) {
+      const btns = document.querySelectorAll(`.option-btn[data-group="${groupName}"]`);
+      const continueBtn = continueBtnId ? document.getElementById(continueBtnId) : null;
+      btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          btns.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          answers[groupName] = btn.dataset.value;
+          if (continueBtn) continueBtn.classList.add('enabled');
+        });
+      });
+    }
+    setupGroup('occasion', 'continue1');
+    setupGroup('style', 'continue2');
+
+    // ─── AI RECOMMENDATION ────────────────────────────────────
+    async function getRecommendation() {
+      answers.extra = document.getElementById('extraDetails').value;
+
+      // Show loading
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-loading').classList.add('active');
+      document.getElementById('errorBox').style.display = 'none';
+
+      const prompt = `Customer:
+- Occasion: ${answers.occasion}
+- Style: ${answers.style}
+- Extra notes: ${answers.extra || 'None'}
+
+Sri Ganesh pieces available:
+${CATALOGUE_LIST}
+
+Recommend exactly 3 pieces. Use this exact format:
+
+PIECE 1
+Name: [exact name from list]
+Why: [2 warm specific sentences on why this suits them]
+
+PIECE 2
+Name: [exact name]
+Why: [explanation]
+
+PIECE 3
+Name: [exact name]
+Why: [explanation]
+
+CLOSING
+[One sentence styling tip for wearing all 3 together]`;
+
+      try {
+        const res = await fetch('/api/recommend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            occasion: answers.occasion,
+            style: answers.style,
+            extra: answers.extra,
+            catalogueList: CATALOGUE_LIST
+          })
+        });
+
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        renderResults(data.result);
+
+      } catch (err) {
+        document.getElementById('screen-loading').classList.remove('active');
+        document.getElementById('screen3').classList.add('active');
+        const eb = document.getElementById('errorBox');
+        eb.textContent = `Something went wrong: ${err.message}`;
+        eb.style.display = 'block';
+      }
+    }
+
+    // ─── RENDER RESULTS ───────────────────────────────────────
+    function findPiece(name) {
+      if (CATALOGUE[name]) return { name, ...CATALOGUE[name] };
+      const lower = name.toLowerCase();
+      const key = Object.keys(CATALOGUE).find(k =>
+        k.toLowerCase().includes(lower) ||
+        lower.includes(k.toLowerCase().split(' ').slice(0, 3).join(' '))
+      );
+      return key ? { name: key, ...CATALOGUE[key] } : null;
+    }
+
+    function renderResults(text) {
+      const output = document.getElementById('recOutput');
+      output.innerHTML = '';
+
+      const pieces = text.split(/PIECE \d+/).filter(b => b.trim());
+      const closingMatch = text.match(/CLOSING\s*\n([\s\S]+?)$/);
+
+      pieces.forEach(block => {
+        const nameMatch = block.match(/Name:\s*(.+)/);
+        const whyMatch = block.match(/Why:\s*([\s\S]+?)(?=\n\nPIECE|\n\nCLOSING|$)/);
+        if (!nameMatch) return;
+
+        const name = nameMatch[1].trim();
+        const why = whyMatch ? whyMatch[1].trim() : '';
+        const piece = findPiece(name);
+
+        const imgHtml = piece
+          ? `<img src="${piece.img}" alt="${name}" onerror="this.style.display='none'">`
+          : '';
+        const linkHtml = piece
+          ? `<a class="view-link" href="${piece.link}" target="_blank">View collection →</a>`
+          : '';
+        const catHtml = piece ? `<div class="product-cat">${piece.cat}</div>` : '';
+
+        output.innerHTML += `
+        <div class="product-card">
+          <div class="product-img">${imgHtml}</div>
+          <div class="product-info">
+            ${catHtml}
+            <div class="product-name">${name}</div>
+            <div class="product-desc">${why}</div>
+            ${linkHtml}
+          </div>
+        </div>`;
+      });
+
+      // WhatsApp message with recommendations
+      const pieceNames = pieces.map(b => {
+        const m = b.match(/Name:\s*(.+)/);
+        return m ? m[1].trim() : '';
+      }).filter(Boolean).join(', ');
+      document.getElementById('waBtn').href =
+        `https://wa.me/${WHATSAPP_NUMBER}?text=Hi! I used the AI Stylist and I'm interested in: ${encodeURIComponent(pieceNames)}`;
+
+      document.getElementById('screen-loading').classList.remove('active');
+      goTo('screen4');
+    }
+
+    // ─── RESTART ──────────────────────────────────────────────
+    function restart() {
+      answers.occasion = ''; answers.style = ''; answers.extra = '';
+      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      document.getElementById('extraDetails').value = '';
+      document.getElementById('continue1').classList.remove('enabled');
+      document.getElementById('continue2').classList.remove('enabled');
+      document.getElementById('recOutput').innerHTML = '';
+      goTo('screen1');
+    }
+  </script>
+</body>
+
+</html>
