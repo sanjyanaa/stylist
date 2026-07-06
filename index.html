@@ -35,7 +35,6 @@
       padding: 24px 0;
     }
 
-    /* Desktop: wider card */
     .phone {
       width: 100%;
       max-width: 480px;
@@ -70,7 +69,6 @@
       display: flex;
     }
 
-    /* progress dots */
     .progress {
       display: flex;
       justify-content: center;
@@ -213,7 +211,6 @@
       outline: 1px solid var(--gold);
     }
 
-    /* LOADING SCREEN */
     #screen-loading {
       display: none;
       flex-direction: column;
@@ -256,7 +253,6 @@
       color: var(--muted);
     }
 
-    /* RESULTS SCREEN */
     #screen4 {
       min-height: auto;
       padding-bottom: 40px;
@@ -307,14 +303,12 @@
       left: 0;
     }
 
-
     .product-info {
       padding: 14px 16px;
       border-top: 3px solid var(--gold);
       flex: 1;
       min-width: 0;
     }
-
 
     .product-cat {
       font-size: 10px;
@@ -554,57 +548,13 @@
 
   <script>
     // ─── CONFIG ───────────────────────────────────────────────
-    // API key removed — handled server-side
-    const WHATSAPP_NUMBER = "60123240160"; // e.g. 60123456789
+    const WHATSAPP_NUMBER = "60123240160";
 
-    // ─── CATALOGUE: piece name → image URL, category, collection link ───
-    const CATALOGUE = {
-      "Maharaja Lion head bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/6-5.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
-      "Bangle with multi-shape garnet": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/2-4.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
-      "Multi-charm bracelet": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/3-4.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
-      "Window Bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/4-4.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
-      "Square-section ruby and garnet bracelet": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/5-2.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
-      "Pearl and emerald Bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/2-3.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
-      "Traditional broad bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/3-5.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
-      "Antique diamond and pink sapphire bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/5-5.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
-      "Lakshmi Bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/1-2.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
-      "Rose-cut diamond bangle": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/10-2.png", cat: "Bangle", link: "https://sriganeshjewellery.com/bangle/" },
-      "Aquamarine earrings": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/5-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Peacock pear shape design": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/3-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Yellow Diamond Flower studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/1-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Leaf-design ear stud": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/4-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Peacock feather ear dangles": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/07/2.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Blue flower ear studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/07/Earring-2-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Green Dangle ear studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/7-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Shimmering Opal ear studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/6-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Glamorous Sunflower ear studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/9-1.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Exquisite Pink Chandelier studs": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/12.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Regal Radiant Rose Earrings": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/13.png", cat: "Earrings", link: "https://sriganeshjewellery.com/earrings/" },
-      "Rhodolite Garnet Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/2-7.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "Red Grapes Creeper Design necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/3-5.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "Fancy Colour Rough Diamond Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/4-5.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "Choker Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/5-6.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "Red and White Zirconia Choker": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/7-2.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "Chandelier Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/8-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "Traditional Emerald Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/9-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "All Gold Choker Antique Design": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/10-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "Fancy Multicolour Tourmaline Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/11-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "Jhumka Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/18-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "Lakshmi Coin Short Necklace": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/19-1.png", cat: "Necklace", link: "https://sriganeshjewellery.com/necklaces/" },
-      "Stunning Seashell Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/1-6.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
-      "Green Garnet Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/2-7.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
-      "Blue sapphire and diamond ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2023/12/1-8.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
-      "Emerald Maharani Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/7-5.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
-      "Ilanthirayan Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/9-5.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
-      "Majestic Blossom Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/20-4.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
-      "Trinity Gem Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/17-4.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
-      "Navarata Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/6-7.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
-      "Ganesha Ring": { img: "https://sriganeshjewellery.com/wp-content/uploads/2024/01/5-7.png", cat: "Ring", link: "https://sriganeshjewellery.com/rings/" },
-    };
-
-    const CATALOGUE_LIST = Object.entries(CATALOGUE)
-      .map(([name, info]) => `- ${name} (${info.cat})`)
-      .join('\n');
+    // NOTE: the local CATALOGUE object has been removed.
+    // Product data (image, category, link) now comes directly from
+    // the /api/recommend response, since retrieval already finds the
+    // real matching products server-side using RAG. No local lookup
+    // needed anymore.
 
     const answers = { occasion: '', style: '', extra: '' };
 
@@ -642,31 +592,6 @@
       document.getElementById('screen-loading').classList.add('active');
       document.getElementById('errorBox').style.display = 'none';
 
-      const prompt = `Customer:
-- Occasion: ${answers.occasion}
-- Style: ${answers.style}
-- Extra notes: ${answers.extra || 'None'}
-
-Sri Ganesh pieces available:
-${CATALOGUE_LIST}
-
-Recommend exactly 3 pieces. Use this exact format:
-
-PIECE 1
-Name: [exact name from list]
-Why: [short and sweet text max 1 line]
-
-PIECE 2
-Name: [exact name]
-Why: [short and sweet text max 1 line]
-
-PIECE 3
-Name: [exact name]
-Why: [short and sweet text max 1 line]
-
-CLOSING
-[One sentence styling tip for wearing all 3 together]`;
-
       try {
         const res = await fetch('/api/recommend', {
           method: 'POST',
@@ -674,14 +599,13 @@ CLOSING
           body: JSON.stringify({
             occasion: answers.occasion,
             style: answers.style,
-            extra: answers.extra,
-            catalogueList: CATALOGUE_LIST
+            extra: answers.extra
           })
         });
 
         const data = await res.json();
         if (data.error) throw new Error(data.error);
-        renderResults(data.result);
+        renderResults(data.result, data.products);
 
       } catch (err) {
         document.getElementById('screen-loading').classList.remove('active');
@@ -693,39 +617,35 @@ CLOSING
     }
 
     // ─── RENDER RESULTS ───────────────────────────────────────
-    function findPiece(name) {
-      if (CATALOGUE[name]) return { name, ...CATALOGUE[name] };
-      const lower = name.toLowerCase();
-      const key = Object.keys(CATALOGUE).find(k =>
-        k.toLowerCase().includes(lower) ||
-        lower.includes(k.toLowerCase().split(' ').slice(0, 3).join(' '))
-      );
-      return key ? { name: key, ...CATALOGUE[key] } : null;
-    }
-
-    function renderResults(text) {
+    // `products` comes directly from the API now (real RAG matches,
+    // in the same order as the PIECE 1/2/3 blocks in `text`), so we
+    // match each explanation to its product by position instead of
+    // doing a fuzzy name lookup against a local catalogue.
+    function renderResults(text, products) {
       const output = document.getElementById('recOutput');
       output.innerHTML = '';
 
       const pieces = text.split(/PIECE \d+/).filter(b => b.trim());
-      const closingMatch = text.match(/CLOSING\s*\n([\s\S]+?)$/);
 
-      pieces.forEach(block => {
+      pieces.forEach((block, i) => {
         const nameMatch = block.match(/Name:\s*(.+)/);
         const whyMatch = block.match(/Why:\s*([\s\S]+?)(?=\n\nPIECE|\n\nCLOSING|$)/);
         if (!nameMatch) return;
 
         const name = nameMatch[1].trim();
         const why = whyMatch ? whyMatch[1].trim() : '';
-        const piece = findPiece(name);
+        const piece = products && products[i] ? products[i] : null;
 
         const imgHtml = piece
-          ? `<img src="${piece.img}" alt="${name}" onerror="this.style.display='none'">`
+          ? `<img src="${piece.image}" alt="${name}" onerror="this.style.display='none'">`
           : '';
-        const linkHtml = piece
+        // link may be null right now — the enriched catalogue doesn't
+        // have category links attached yet, so this just won't render
+        // until that's added back.
+        const linkHtml = piece && piece.link
           ? `<a class="view-link" href="${piece.link}" target="_blank">View collection →</a>`
           : '';
-        const catHtml = piece ? `<div class="product-cat">${piece.cat}</div>` : '';
+        const catHtml = piece ? `<div class="product-cat">${piece.type}</div>` : '';
 
         output.innerHTML += `
         <div class="product-card">
