@@ -1,14 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// embedded-products.json must be copied into this same /api folder
-// so it gets bundled with the serverless function at deploy time.
-const embeddedProducts = JSON.parse(
-  fs.readFileSync(path.join(__dirname, 'embedded-products.json'), 'utf-8')
-);
+// Imported directly as a JS module (not read at runtime via fs) so
+// Vercel's bundler reliably includes it in the deployed function.
+import embeddedProducts from './embedded-products.js';
 
 const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const VOYAGE_ENDPOINT = 'https://api.voyageai.com/v1/embeddings';
