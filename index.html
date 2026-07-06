@@ -37,9 +37,9 @@
 
     .phone {
       width: 100%;
-      max-width: 480px;
+      max-width: px;
       background: var(--white);
-      min-height: 780px;
+      min-height: 750px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
       border-radius: 4px;
       overflow: hidden;
@@ -422,25 +422,74 @@
 
     @media (min-width: 600px) {
       .phone {
-        max-width: 900px;
+        max-width: 2000px;
+      }
+
+      .screen:not(#screen4) {
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
       }
 
       #screen4 {
-        padding: 40px 60px;
+        padding: 56px 80px;
+      }
+
+      .results-title {
+        font-size: 36px;
+      }
+
+      .results-sub {
+        font-size: 15px;
+        margin-bottom: 36px;
       }
 
       #recOutput {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        gap: 32px;
       }
 
       .product-img {
-        height: 280px;
+        height: 420px;
       }
 
       .product-card {
         margin-bottom: 0;
+      }
+
+      .product-info {
+        padding: 20px 22px;
+      }
+
+      .product-cat {
+        font-size: 12px;
+      }
+
+      .product-name {
+        font-size: 22px;
+      }
+
+      .product-desc {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .quote {
+        font-size: 16px;
+        margin: 32px 0;
+      }
+
+      .cta-box {
+        padding: 32px 28px;
+      }
+
+      .cta-heading {
+        font-size: 22px;
+      }
+
+      .cta-sub {
+        font-size: 14px;
       }
     }
   </style>
