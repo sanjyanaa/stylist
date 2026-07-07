@@ -52,6 +52,16 @@ function retrieveTopProducts(queryEmbedding, topN = 3) {
   return scored.slice(0, topN);
 }
 
+// Maps each product category to its real collection page on the live site.
+// Confirmed via direct fetch against sriganeshjewellery.com for all 5 categories.
+const CATEGORY_LINKS = {
+  'Bangle': 'https://sriganeshjewellery.com/bangle/',
+  'Earrings': 'https://sriganeshjewellery.com/earrings/',
+  'Necklace': 'https://sriganeshjewellery.com/necklaces/',
+  'Ring': 'https://sriganeshjewellery.com/rings/',
+  'Thali': 'https://sriganeshjewellery.com/thali/',
+};
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -131,7 +141,7 @@ CLOSING
       products: topProducts.map(p => ({
         name: p.name,
         image: p.image,
-        link: p.link || null,
+        link: CATEGORY_LINKS[p.type] || null,
         type: p.type,
       })),
     });
